@@ -31,8 +31,11 @@ fn is_valid(grid: [[u8; 9]; 9], pos: (usize, usize), val: u8) -> bool {
 	return true;
 }
 
-fn print_grid(grid: [[u8; 9]; 9]) {
-	println!("\nFinished!\n┌───────┬───────┬───────┐");
+fn print_grid(grid: [[u8; 9]; 9], finished: bool) {
+	println!(
+		"\n{}\n┌───────┬───────┬───────┐",
+		if finished { "Complete!" } else { "Input:" }
+	);
 
 	for (i, row) in grid.iter().enumerate() {
 		for (j, val) in row.iter().enumerate() {
@@ -57,7 +60,7 @@ fn solve(mut grid: [[u8; 9]; 9]) -> bool {
 	let empty = find_empty(grid);
 
 	if empty.0 == 9 {
-		print_grid(grid);
+		print_grid(grid, true);
 		return true;
 	}
 
@@ -77,7 +80,10 @@ fn solve(mut grid: [[u8; 9]; 9]) -> bool {
 }
 
 fn main() {
-	println!("┌{}┐\n│ Rust Sudoku Solver │\n└{0}┘", "─".repeat(20));
+	println!(
+		"┌{}┐\n│ Rust Sudoku Solver │\n└{0}┘\n[ back ] Retype previous row\n[ quit ] Exit program\n",
+		"─".repeat(20)
+	);
 
 	let mut grid = [[0; 9]; 9];
 	let mut i = 0;
@@ -89,6 +95,21 @@ fn main() {
 		let mut row = String::new();
 
 		io::stdin().read_line(&mut row).unwrap();
+
+		match row.trim() {
+			"back" => {
+				if i > 0 {
+					i -= 1;
+				} else {
+					println!("Already at first row!");
+				}
+
+				println!();
+				continue 'outer;
+			}
+			"quit" => return,
+			_ => (),
+		}
 
 		let mut count = 0;
 		for (j, num) in row.split_whitespace().enumerate() {
@@ -110,6 +131,8 @@ fn main() {
 
 		i += 1;
 	}
+
+	print_grid(grid, false);
 
 	println!("\nSolving...");
 

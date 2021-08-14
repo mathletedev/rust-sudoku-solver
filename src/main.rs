@@ -1,3 +1,5 @@
+use std::io::{self, Write};
+
 fn find_empty(grid: [[u8; 9]; 9]) -> (usize, usize) {
 	for (i, row) in grid.iter().enumerate() {
 		for (j, val) in row.iter().enumerate() {
@@ -30,7 +32,7 @@ fn is_valid(grid: [[u8; 9]; 9], pos: (usize, usize), val: u8) -> bool {
 }
 
 fn print_grid(grid: [[u8; 9]; 9]) {
-	println!("┌───────┬───────┬───────┐");
+	println!("\nFinished!\n┌───────┬───────┬───────┐");
 
 	for (i, row) in grid.iter().enumerate() {
 		for (j, val) in row.iter().enumerate() {
@@ -75,17 +77,41 @@ fn solve(mut grid: [[u8; 9]; 9]) -> bool {
 }
 
 fn main() {
-	const GRID: [[u8; 9]; 9] = [
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-	];
+	println!("┌{}┐\n│ Rust Sudoku Solver │\n└{0}┘", "─".repeat(20));
 
-	solve(GRID);
+	let mut grid = [[0; 9]; 9];
+	let mut i = 0;
+
+	'outer: while i < 9 {
+		print!("Enter row {}: ", i + 1);
+		io::stdout().flush().expect("Failed to write line");
+
+		let mut row = String::new();
+
+		io::stdin().read_line(&mut row).unwrap();
+
+		let mut count = 0;
+		for (j, num) in row.split_whitespace().enumerate() {
+			count += 1;
+
+			grid[i][j] = match num.parse::<u8>() {
+				Ok(int) => int,
+				Err(_) => {
+					println!("Invalid input values, try again\n");
+					continue 'outer;
+				}
+			}
+		}
+
+		if count != 9 {
+			println!("Invalid input length, try again\n");
+			continue;
+		}
+
+		i += 1;
+	}
+
+	println!("\nSolving...");
+
+	solve(grid);
 }

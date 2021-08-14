@@ -1,2 +1,3 @@
-# rust-sudoku-solver
-C++ sudoku solver recreated in Rust
+# Rust Sudoku Solver
+
+> Sudoku solver implemented in Rust

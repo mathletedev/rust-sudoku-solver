@@ -113,6 +113,11 @@ fn main() {
 
 		let mut count = 0;
 		for (j, num) in row.split_whitespace().enumerate() {
+			if j >= 9 {
+				println!("Invalid input length, try again\n");
+				continue 'outer;
+			}
+
 			count += 1;
 
 			grid[i][j] = match num.parse::<u8>() {

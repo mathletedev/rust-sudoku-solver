@@ -9,7 +9,7 @@ fn find_empty(grid: [[u8; 9]; 9]) -> (usize, usize) {
 		}
 	}
 
-	return (9, 9);
+	(9, 9)
 }
 
 fn is_valid(grid: [[u8; 9]; 9], pos: (usize, usize), val: u8) -> bool {
@@ -28,7 +28,7 @@ fn is_valid(grid: [[u8; 9]; 9], pos: (usize, usize), val: u8) -> bool {
 		}
 	}
 
-	return true;
+	true
 }
 
 fn print_grid(grid: [[u8; 9]; 9], finished: bool) {
@@ -76,7 +76,7 @@ fn solve(mut grid: [[u8; 9]; 9]) -> bool {
 
 	grid[empty.0][empty.1] = 0;
 
-	return false;
+	false
 }
 
 fn main() {
